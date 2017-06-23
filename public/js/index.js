@@ -3,10 +3,6 @@
  socket.on('connect', function() {
      console.log('Connected to server');
 
-     //  socket.emit("createMessage", {
-     //      to: 'Raza',
-     //      text: 'Hey. This is Hasan.'
-     //  });
  });
 
  socket.on('disconnect', function() {
@@ -18,4 +14,25 @@
  //  });
  socket.on('newMessage', (message) => {
      console.log("Message", message);
+     var li = jQuery('<li></li>');
+     li.text(`${message.from}: ${message.text}`);
+
+     jQuery("#messages").append(li);
+ });
+
+ socket.emit("createMessage", {
+     from: 'Frank',
+     text: 'Hey.'
+ }, function(data) {
+     console.log("Got it", data);
+ });
+
+ jQuery("#message-form").on('submit', function(e) {
+     e.preventDefault();
+     socket.emit('createMessage', {
+         from: "User",
+         text: jQuery('[name=message]').val()
+     }, function() {
+
+     });
  });
